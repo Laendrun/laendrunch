@@ -20,12 +20,22 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - [x] connect to mysql database
         - [x] build the query wrapper to use queries asynchronously
 - [ ] Implement auth routes
-    - [ ] [POST /auth/signup]
-        - [ ] connect to mysql database
-        - [ ] save users in the database
+    - [x] [POST /auth/signup]
+        - [x] connect to mysql database
+        - [x] save users in the database
     - [ ] [POST /auth/login]
-        - [ ] validate user
-        - [ ] check if username in db
-            - [ ] compare password with hashed password
-            - [ ] create a JWT
-            - [ ] respond with JWT
+        - [x] validate user
+        - [x] check if username in db
+            - [x] compare password with hashed password
+            - [x] create a JWT
+            - [x] respond with JWT
+
+## Installed modules 
+
+- [x] Express
+- [x] mysql
+- [x] axios
+- [x] bcrypt
+- [x] jsonwebtoken
+- [x] cors
+- [x] @hapi/joi
