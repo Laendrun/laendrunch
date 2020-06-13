@@ -3,6 +3,7 @@ const cors = require('cors');
 const app = express();
 
 const emailRoutes = require('./api/routes/email');
+const authRoutes = require('./api/routes/auth');
 
 app.use(cors());
 app.use(express.json());
@@ -14,6 +15,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.use('/email', emailRoutes);
+app.use('/auth', authRoutes);
 
 function notFound(req, res, next) {
   res.status(404);
