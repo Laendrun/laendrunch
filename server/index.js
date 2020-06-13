@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const emailRoutes = require('./api/routes/email');
+
 app.use(cors());
 app.use(express.json());
 
@@ -10,6 +12,8 @@ app.get('/', (req, res, next) => {
         message: '🛠 Hello World 🛠'
     });
 });
+
+app.use('/email', emailRoutes);
 
 function notFound(req, res, next) {
   res.status(404);

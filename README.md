@@ -8,10 +8,10 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
 
 ## To-Do
 
-- [ ] Build a base API
-- [ ] Learn how to make a correct error handler
-- [ ] Build an error handler
-- [ ] Return correct error messages / codes
+- [x] Build a base API
+- [x] Learn how to make a correct error handler
+- [x] Build an error handler
+- [x] Return correct error messages / codes
 - [ ] Implement Email routes
     - [ ] [POST /email/send]
         - [ ] Call sendmail PHP API
@@ -19,6 +19,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - [ ] install mysql Node module
         - [ ] connect to mysql database
         - [ ] build the query wrapper to use queries asynchronously
+- [ ] Implement auth routes
     - [ ] [POST /auth/signup]
         - [ ] connect to mysql database
         - [ ] save users in the database
