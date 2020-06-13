@@ -12,7 +12,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
 - [x] Learn how to make a correct error handler
 - [x] Build an error handler
 - [x] Return correct error messages / codes
-- [ ] Implement Email routes
+- [x] Implement Email routes
     - [x] [POST /email/send]
         - [x] Call sendmail PHP API
     - [x] [POST /email/save]
