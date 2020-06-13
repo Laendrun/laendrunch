@@ -13,12 +13,12 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
 - [x] Build an error handler
 - [x] Return correct error messages / codes
 - [ ] Implement Email routes
-    - [ ] [POST /email/send]
-        - [ ] Call sendmail PHP API
-    - [ ] [POST /email/save]
-        - [ ] install mysql Node module
-        - [ ] connect to mysql database
-        - [ ] build the query wrapper to use queries asynchronously
+    - [x] [POST /email/send]
+        - [x] Call sendmail PHP API
+    - [x] [POST /email/save]
+        - [x] install mysql Node module
+        - [x] connect to mysql database
+        - [x] build the query wrapper to use queries asynchronously
 - [ ] Implement auth routes
     - [ ] [POST /auth/signup]
         - [ ] connect to mysql database
