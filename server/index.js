@@ -5,16 +5,20 @@ const app = express();
 const emailRoutes = require('./api/routes/email');
 const authRoutes = require('./api/routes/auth');
 
+const middlewares = require('./api/middlewares/auth.js');
+
 app.use(cors());
 app.use(express.json());
+app.use(middlewares.checkTokenSetUser);
 
-app.get('/', (req, res, next) => {
+app.get('/home', (req, res, next) => {
     res.json({
-        message: '🛠 Hello World 🛠'
+        message: '🛠 Hello World 🛠',
+        user: req.user,
     });
 });
 
-app.use('/email', emailRoutes);
+app.use('/email', middlewares.isLoggedIn, emailRoutes);
 app.use('/auth', authRoutes);
 
 function notFound(req, res, next) {
