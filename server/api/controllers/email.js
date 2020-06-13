@@ -1,7 +1,7 @@
 const axios = require('axios');
 const mysql = require('mysql');
 const util = require('util');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const db_utils = require('../db_utils.js');
 
 const email_schema = Joi.object({
