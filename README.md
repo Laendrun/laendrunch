@@ -29,3 +29,13 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - [x] compare password with hashed password
             - [x] create a JWT
             - [x] respond with JWT
+
+## Installed modules 
+
+- [x] Express
+- [x] mysql
+- [x] axios
+- [x] bcrypt
+- [x] jsonwebtoken
+- [x] cors
+- [x] @hapi/joi
