@@ -23,3 +23,9 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
     - [ ] [POST /auth/signup]
         - [ ] connect to mysql database
         - [ ] save users in the database
+    - [ ] [POST /auth/login]
+        - [ ] validate user
+        - [ ] check if username in db
+            - [ ] compare password with hashed password
+            - [ ] create a JWT
+            - [ ] respond with JWT
