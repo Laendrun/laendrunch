@@ -1,0 +1,11 @@
+{
+  "name": "laendrun-server",
+  "version": "1.0.0",
+  "description": "laendrun.ch backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Simon Aeby",
+  "license": "MIT"
+}
