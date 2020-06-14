@@ -54,3 +54,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
     - Backend
         - GET /user
             - Passwords are no longer returned by the API
+- v1.3.0
+    - Backend
+        - GET /email
+            - Returns an array of all emails saved in the database and all of the linked informations
