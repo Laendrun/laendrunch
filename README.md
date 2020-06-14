@@ -58,3 +58,10 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
     - Backend
         - GET /email
             - Returns an array of all emails saved in the database and all of the linked informations
+- v1.3.1
+    - Backend
+        - No change
+    - Frontend 
+        - Fixed Issue #14
+            - Typo in the homepage 
+        - Footer added to the homepage
