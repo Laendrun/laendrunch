@@ -7,4 +7,6 @@ router.patch('/password', UserController.patch_password);
 
 router.patch('/email', UserController.patch_email);
 
+router.patch('/username', UserController.patch_username);
+
 module.exports = router;
