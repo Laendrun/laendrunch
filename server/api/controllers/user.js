@@ -120,8 +120,8 @@ exports.patch_username = async (req, res, next) => {
 exports.get_user = async (req, res, next) => {
     const db = db_utils.makeDb(db_utils.config);
 
-    let sql = "SELECT * FROM ?? WHERE 1";
-    let inserts = ['users'];
+    let sql = "SELECT ??, ??, ??, ?? FROM ?? WHERE 1";
+    let inserts = ['_id', 'username', 'email', 'role_id', 'users'];
     sql = mysql.format(sql, inserts);
 
     try {
