@@ -1,6 +1,5 @@
 const axios = require('axios');
 const mysql = require('mysql');
-const util = require('util');
 const Joi = require('@hapi/joi');
 const db_utils = require('../db_utils.js');
 
@@ -14,7 +13,7 @@ const email_schema = Joi.object({
 
 exports.email_send = (req, res, next) => {
     const SENDMAIL_URL = 'http://sendmail.laendrun.ch/api/mail/send.php';
-    const body = 
+    const body =
     {
         to: req.body.to,
         from: req.body.from,
@@ -38,7 +37,7 @@ exports.email_send = (req, res, next) => {
 }
 
 exports.email_save = async (req, res, next) => {
-    const db = makeDb(db_utils.config);
+    const db = db_utils.makeDb(db_utils.config);
     // console.log(db_utils.config);
     const { error, value } = email_schema.validate(req.body);
 
@@ -62,19 +61,5 @@ exports.email_save = async (req, res, next) => {
             await db.close();
         }
     }
-    
-}
 
-function makeDb(config) {
-    const conn = mysql.createConnection(config)
-
-    return {
-        query(sql, args) {
-            return util.promisify(conn.query)
-                .call(conn, sql, args);
-        },
-        close() {
-            return util.promisify(conn.end().call(conn));
-        }
-    };
 }
