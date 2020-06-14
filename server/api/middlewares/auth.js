@@ -31,6 +31,16 @@ function isLoggedIn(req, res, next) {
     }
 }
 
+function isAdmin(req, res, next) {
+    if (req.user && req.user.role_id == 2) {
+        next();
+    } else {
+        const error = new Error('🚫 Un-Authorized 🚫');
+        res.status(401);
+        next(error);
+    }
+}
+
 module.exports = {
     checkTokenSetUser,
     isLoggedIn
