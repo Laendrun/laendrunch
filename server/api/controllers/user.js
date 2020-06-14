@@ -7,6 +7,10 @@ const password = Joi.object({
     password: Joi.string().trim().min(10).required(),
 })
 
+const email = Joi.object({
+    email: Joi.string().email({ tlds: { allow: false } }),
+})
+
 
 exports.patch_password = async (req, res, next) => {
     const db = db_utils.makeDb(db_utils.config);
@@ -38,6 +42,35 @@ exports.patch_password = async (req, res, next) => {
         return res.status(403).json({
             error: 'Validation failed',
             message: error.message,
+        })
+    }
+}
+
+exports.patch_email = async (req, res, next) => {
+    const db = db_utils.makeDb(db_utils.config);
+    const { error, value } = email.validate(req.body);
+
+    if (!error) {
+        let sql = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+        let inserts = ['users', 'email', value.email, '_id', req.user._id];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const updatedUser = await db.query(sql);
+            return res.status(201).json({
+                user: updatedUser
+            });
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+    } else {
+        return res.status(400).json({
+            message: 'Patching failed',
+            error: error.message,
         })
     }
 }
