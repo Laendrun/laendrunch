@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import 'bootswatch/dist/simplex/bootstrap.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 import App from './App.vue'
 import router from './router'
