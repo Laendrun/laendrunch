@@ -11,6 +11,9 @@ const email = Joi.object({
     email: Joi.string().email({ tlds: { allow: false } }),
 })
 
+const username = Joi.object({
+    username: Joi.string().alphanum().min(3).max(30).required(),
+})
 
 exports.patch_password = async (req, res, next) => {
     const db = db_utils.makeDb(db_utils.config);
@@ -25,9 +28,9 @@ exports.patch_password = async (req, res, next) => {
         sql = mysql.format(sql, inserts);
 
         try {
-            const updatedUser = await db.query(sql);
+            const update = await db.query(sql);
             return res.status(201).json({
-                user: updatedUser
+                user: update
             });
         } catch (err) {
             const error = new Error(err);
@@ -56,9 +59,9 @@ exports.patch_email = async (req, res, next) => {
         sql = mysql.format(sql, inserts);
 
         try {
-            const updatedUser = await db.query(sql);
+            const update = await db.query(sql);
             return res.status(201).json({
-                user: updatedUser
+                user: update
             });
         } catch (err) {
             const error = new Error(err);
@@ -68,8 +71,47 @@ exports.patch_email = async (req, res, next) => {
             await db.close();
         }
     } else {
-        return res.status(400).json({
-            message: 'Patching failed',
+        return res.status(403).json({
+            message: 'Validation failed',
+            error: error.message,
+        })
+    }
+}
+
+exports.patch_username = async (req, res, next) => {
+    const db = db_utils.makeDb(db_utils.config);
+    const { error, value } = username.validate(req.body);
+
+    if (!error) {
+        let sql = "SELECT * FROM ?? WHERE ?? = ?";
+        let inserts = ['users', 'username', value.username];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const user = await db.query(sql);
+            if (user[0]) {
+                const error = new Error('Username unavailable, please choose another one');
+                res.status(409);
+                next(error);
+            } else {
+                let sql = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+                let inserts = ['users', 'username', value.username, '_id', req.user._id];
+                sql = mysql.format(sql, inserts);
+                const update = await db.query(sql);
+                return res.status(201).json({
+                    user: update
+                })
+            }
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+    } else {
+        return res.status(403).json({
+            message: 'Validation failed',
             error: error.message,
         })
     }
