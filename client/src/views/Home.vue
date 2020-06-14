@@ -193,7 +193,6 @@ const schema  = Joi.object({
 })
 
 export default {
-  // 
   data: () => ({
     loading: false,
     errorMessage: '',

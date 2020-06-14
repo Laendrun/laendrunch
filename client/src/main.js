@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import 'bootswatch/dist/simplex/bootstrap.css';
 
 import App from './App.vue'

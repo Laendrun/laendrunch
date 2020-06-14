@@ -8,7 +8,16 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: 'Laendrun | Services Informatiques',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Services informatiques en Suisse romande par Laendrun | Laendrun.ch'
+        }
+      ]
+    }
   },
 ]
 
