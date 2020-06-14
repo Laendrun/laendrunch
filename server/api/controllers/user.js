@@ -116,3 +116,24 @@ exports.patch_username = async (req, res, next) => {
         })
     }
 }
+
+exports.get_user = async (req, res, next) => {
+    const db = db_utils.makeDb(db_utils.config);
+
+    let sql = "SELECT * FROM ?? WHERE 1";
+    let inserts = ['users'];
+    sql = mysql.format(sql, inserts);
+
+    try {
+        const users = await db.query(sql);
+        return res.status(200).json({
+            users: users
+        })
+    } catch (err) {
+        const error = new Error(err);
+        res.status(500);
+        next(error);
+    } finally {
+        await db.close();
+    }
+}
