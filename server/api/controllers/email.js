@@ -23,6 +23,7 @@ exports.email_send = (req, res, next) => {
         subject: req.body.subject,
     };
 
+    console.log(body);
     // send email
     axios.post(SENDMAIL_URL, body)
         .then((response) => {

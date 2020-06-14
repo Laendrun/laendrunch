@@ -1,24 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    meta: {
-      title: 'Laendrun | Services Informatiques',
-      metaTags: [
-        {
-          name: 'description',
-          content: 'Services informatiques en Suisse romande par Laendrun | Laendrun.ch'
-        }
-      ]
-    }
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  }
 ]
 
 const router = new VueRouter({
