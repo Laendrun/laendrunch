@@ -4,6 +4,7 @@ const app = express();
 
 const emailRoutes = require('./api/routes/email');
 const authRoutes = require('./api/routes/auth');
+const userRoutes = require('./api/routes/user');
 
 const middlewares = require('./api/middlewares/auth.js');
 
@@ -12,13 +13,14 @@ app.use(express.json());
 app.use(middlewares.checkTokenSetUser);
 
 app.get('/home', (req, res, next) => {
-    res.json({
-        message: '🛠 Hello World 🛠',
-        user: req.user,
-    });
+  res.json({
+    message: '🛠 Hello World 🛠',
+    user: req.user,
+  });
 });
 
 app.use('/email', middlewares.isLoggedIn, emailRoutes);
+app.use('/user', middlewares.isLoggedIn, userRoutes);
 app.use('/auth', authRoutes);
 
 function notFound(req, res, next) {
@@ -37,7 +39,7 @@ function errorHandler(err, req, res, next) {
 app.use(notFound);
 app.use(errorHandler);
 
-const port = process.env.PORT || 4040; 
+const port = process.env.PORT || 4040;
 app.listen(port, () => {
-    console.log(`App listening on port ${port}!`)
+  console.log(`App listening on port ${port}!`)
 });

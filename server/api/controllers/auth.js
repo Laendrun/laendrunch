@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db_utils = require('../db_utils');
-const util = require('util');
 
 const schema = Joi.object({
     username: Joi.string().alphanum().min(3).max(30).required(),
@@ -17,7 +16,7 @@ const login_schema = Joi.object({
 });
 
 exports.auth_signup = async (req, res, next) => {
-    const db = makeDb(db_utils.config);
+    const db = db_utils.makeDb(db_utils.config);
     const { error, value } = schema.validate(req.body);
 
     if (!error) {
@@ -27,7 +26,7 @@ exports.auth_signup = async (req, res, next) => {
 
         try {
             const user = await db.query(sql);
-            if(user[0]) {
+            if (user[0]) {
                 const error = new Error('Username unavailable, please choose another one.');
                 res.status(409);
                 next(error);
@@ -50,7 +49,7 @@ exports.auth_signup = async (req, res, next) => {
         } catch (err) {
             const error = new Error(err);
             res.status(500);
-            next(err);
+            next(error);
         } finally {
             await db.close();
         }
@@ -76,19 +75,19 @@ exports.auth_login = async (req, res, next) => {
 
         try {
             const user = await db.query(sql);
-            if (!user[0]){
+            if (!user[0]) {
                 error422(res, next);
             } else {
                 // compare password with hashed password
                 bcrypt
-                .compare(value.password, user[0].password)
-                .then((result) => {
-                    if (result) {
-                        createToken(user[0], res, next);
-                    } else {
-                        error422(res, next);
-                    }
-                })
+                    .compare(value.password, user[0].password)
+                    .then((result) => {
+                        if (result) {
+                            createToken(user[0], res, next);
+                        } else {
+                            error422(res, next);
+                        }
+                    })
             }
 
         } catch (err) {
@@ -98,7 +97,7 @@ exports.auth_login = async (req, res, next) => {
         } finally {
             await db.close();
         }
-    
+
 
 
     } else {
@@ -132,19 +131,4 @@ function error422(res, next) {
     res.status(422);
     const error = new Error('Unable to login.');
     next(error);
-}
-
-function makeDb(config) {
-    const conn = mysql.createConnection(config)
-
-    return {
-        query(sql, args) {
-            return util.promisify(conn.query)
-                .call(conn, sql, args);
-        },
-        close() {
-            return util.promisify(conn.end().call(conn));
-        }
- 
-    };
 }
