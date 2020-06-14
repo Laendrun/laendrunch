@@ -2,8 +2,17 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 Vue.use(VueRouter)
+
+function isLoggedIn(to, from, next) {
+  if (localStorage.token) {
+    next();
+  } else {
+    next('/login');
+  }
+}
 
 const routes = [
   {
@@ -15,6 +24,12 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    beforeEnter: isLoggedIn
   }
 ]
 

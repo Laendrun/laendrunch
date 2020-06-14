@@ -25,7 +25,7 @@
 <script>
 import Joi from "@hapi/joi";
 
-const LOGIN_URL = "http://api.laendrun.ch/auth/login";
+const LOGIN_URL = "//api.laendrun.ch/auth/login";
 
 const schema = Joi.object({
   username: Joi.string()
@@ -77,6 +77,7 @@ export default {
             localStorage.token = result.token;
             this.loading = false;
             this.successMessage = "Connecté";
+            this.$router.push("/dashboard");
           })
           .catch(error => {
             this.loading = false;
