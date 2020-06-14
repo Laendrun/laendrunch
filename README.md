@@ -50,3 +50,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - Allow the connected user's username to be changed
         - GET /user
             - Returns an array of all users and all of their informations in the database
+- v1.2.1
+    - Backend
+        - GET /user
+            - Passwords are no longer returned by the API
