@@ -77,3 +77,18 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - Added a isAdmin middleware
     - Frontend
         - No change
+- v1.5.0
+    - Backend
+        - No change
+    - Frontend
+        - Renamed /login to /adminlogin
+            - /adminlogin will be used by me to connect
+        - Renamed /dashboard to /admin
+            - /admin will be my admin dashboard
+        - Created /login for user login
+            - /login will be used by users to connect
+        - Created /dashboard
+            - /dashboard will be the user's dashboard
+        - Added a _Not found_ hanlder
+            - Redirects user to / when the page they're trying to access doesn't exist
+        - Added a basic user list in the admin dashboard page
