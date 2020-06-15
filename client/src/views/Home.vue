@@ -159,6 +159,14 @@
           </div>
           <button type="submit" class="btn btn-primary">Envoyer</button>
         </fieldset>
+        <p>Si vous rencontrez des problèmes avec le formulaire de contact, merci de m'envoyer un email à contact@laendrun.ch</p>
+        <p>
+          Ou si vous préférez / connaissez, vous pouvez ouvrir une issue sur
+          <a
+            href="https://github.com/Laendrun/laendrunch"
+            target="_blank"
+          >GitHub</a>
+        </p>
       </form>
     </div>
 
@@ -175,10 +183,10 @@
 
 <script>
 import Joi from "@hapi/joi";
-const SENDMAIL_URL = "http://api.laendrun.ch/email/send";
-const SAVEMAIL_URL = "http://api.laendrun.ch/email/save";
+const SENDMAIL_URL = "//api.laendrun.ch/special/send";
+const SAVEMAIL_URL = "//api.laendrun.ch/special/save";
 const TOKEN =
-  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjI0LCJ1c2VybmFtZSI6InN5cyIsImVtYWlsIjoiYWVieTI4MUBnbWFpbC5jb20iLCJpYXQiOjE1OTIwODg3NzMsImV4cCI6MTU5MjE3NTE3M30.wcE1D0L6ux6HWm2R-DOa6VzBFP10i2DRwTwCDC3kxYw";
+  "Special zqBwYRRrX9jXFsma8RaDtSJjct3CPC5qXy4XVhktaghYmZV8CdkS2NeDrzR7vvx3S65UbA7qcWgXwazpVeTzSW8a5NfWU55vcmDnqrx45UscfyXW4hduuQ4pMEkDxqf9HjhBaXcWVJT48pFrqmyJVCytDZbacnxMKcaHuUh2U8jMUAcShvfXs4phapg2kfmL4aJubMarquFSMKQKvu5vdNejTAskVxPBAJuMXhvHndpxfEmCTgTD3KjxyVXRYXG2";
 
 const schema = Joi.object({
   from: Joi.string()
