@@ -79,7 +79,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - No change
 - v1.5.0
     - Backend
-        - No change
+        - Added route /special for contact form
     - Frontend
         - Renamed /login to /adminlogin
             - /adminlogin will be used by me to connect
@@ -92,3 +92,4 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - Added a _Not found_ hanlder
             - Redirects user to / when the page they're trying to access doesn't exist
         - Added a basic user list in the admin dashboard page
+        - Sending message fetch on a new route
