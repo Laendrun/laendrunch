@@ -16,6 +16,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
 - [x] cors
 - [x] @hapi/joi
 - [x] vue-cli
+- [x] @fortawesome/fontawesome-free
 
 ## Version history
 
@@ -50,14 +51,20 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - Allow the connected user's username to be changed
         - GET /user
             - Returns an array of all users and all of their informations in the database
+    - Frontend
+        - No change
 - v1.2.1
     - Backend
         - GET /user
             - Passwords are no longer returned by the API
+    - Frontend
+        - No change
 - v1.3.0
     - Backend
         - GET /email
             - Returns an array of all emails saved in the database and all of the linked informations
+    - Frontend
+        - No change
 - v1.3.1
     - Backend
         - No change
@@ -65,3 +72,23 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - Fixed Issue #14
             - Typo in the homepage 
         - Footer added to the homepage
+- v1.4.0
+    - Backend
+        - Added a isAdmin middleware
+    - Frontend
+        - No change
+- v1.5.0
+    - Backend
+        - No change
+    - Frontend
+        - Renamed /login to /adminlogin
+            - /adminlogin will be used by me to connect
+        - Renamed /dashboard to /admin
+            - /admin will be my admin dashboard
+        - Created /login for user login
+            - /login will be used by users to connect
+        - Created /dashboard
+            - /dashboard will be the user's dashboard
+        - Added a _Not found_ hanlder
+            - Redirects user to / when the page they're trying to access doesn't exist
+        - Added a basic user list in the admin dashboard page

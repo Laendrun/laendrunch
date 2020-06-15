@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import AdminLogin from '../views/AdminLogin.vue'
+import Admin from '../views/Admin.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 
@@ -10,8 +12,12 @@ function isLoggedIn(to, from, next) {
   if (localStorage.token) {
     next();
   } else {
-    next('/login');
+    next('/');
   }
+}
+
+function notFound(to, from, next) {
+  next('/');
 }
 
 const routes = [
@@ -21,15 +27,31 @@ const routes = [
     component: Home,
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login
+    path: '/adminlogin',
+    name: 'AdminLogin',
+    component: AdminLogin
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
     beforeEnter: isLoggedIn
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    beforeEnter: isLoggedIn
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '*',
+    name: 'Not Found',
+    beforeEnter: notFound
   }
 ]
 

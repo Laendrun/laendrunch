@@ -20,6 +20,7 @@ app.get('/home', (req, res, next) => {
 });
 
 app.use('/email', middlewares.isLoggedIn, emailRoutes);
+app.use('/special', middlewares.isSpecial, emailRoutes);
 app.use('/user', middlewares.isLoggedIn, userRoutes);
 app.use('/auth', authRoutes);
 
