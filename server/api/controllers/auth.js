@@ -63,7 +63,7 @@ exports.auth_signup = async (req, res, next) => {
 }
 
 exports.auth_login = async (req, res, next) => {
-    const db = makeDb(db_utils.config);
+    const db = db_utils.makeDb(db_utils.config);
     // validate user
     const { error, value } = login_schema.validate(req.body);
 

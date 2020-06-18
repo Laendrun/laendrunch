@@ -13,10 +13,7 @@
         Votre ordinateur ne s'allume plus,
         il devient vieux ou lent et vous n'avez pas envie d'en acheter un nouveau ?
       </p>
-      <p>
-        Contactez nous par email à contact@laendrun.ch et nous vous
-        proposerons une solution adaptée à vos besoin 😉.
-      </p>
+      <p>Contactez moi via le formulaire de contact en bas de page et je vous proposerai une solution adaptée 😉.</p>
       <hr />
       <p>Voici les différents services que je propose :</p>
       <ul>
@@ -115,7 +112,7 @@
 
     <br />
     <hr />
-    <div class="contact pt-3 pb-5 mb-5 text-left">
+    <div class="contact pt-3 mb-5 text-left">
       <div v-if="loading">
         <img src="../assets/infinity.svg" />
       </div>
@@ -159,17 +156,23 @@
           </div>
           <button type="submit" class="btn btn-primary">Envoyer</button>
         </fieldset>
-        <p>Si vous rencontrez des problèmes avec le formulaire de contact, merci de m'envoyer un email à contact@laendrun.ch</p>
+      </form>
+      <div class="text-center pt-3">
         <p>
-          Ou si vous préférez / connaissez, vous pouvez ouvrir une issue sur
+          Si vous rencontrez des problèmes avec le formulaire de contact, vous pouvez envoyer un email à
           <a
-            href="https://github.com/Laendrun/laendrunch"
+            href="mailto:contact@laendrun.ch"
+          >contact@laendrun.ch</a>
+        </p>
+        <small>
+          Vous pouvez aussi ouvrir une issue sur
+          <a
+            href="https://github.com/Laendrun/laendrunch/issues"
             target="_blank"
           >GitHub</a>
-        </p>
-      </form>
+        </small>
+      </div>
     </div>
-
     <div class="footer text-center">
       <hr />
       <p>
@@ -183,10 +186,9 @@
 
 <script>
 import Joi from "@hapi/joi";
-const SENDMAIL_URL = "//api.laendrun.ch/special/send";
-const SAVEMAIL_URL = "//api.laendrun.ch/special/save";
-const TOKEN =
-  "Special zqBwYRRrX9jXFsma8RaDtSJjct3CPC5qXy4XVhktaghYmZV8CdkS2NeDrzR7vvx3S65UbA7qcWgXwazpVeTzSW8a5NfWU55vcmDnqrx45UscfyXW4hduuQ4pMEkDxqf9HjhBaXcWVJT48pFrqmyJVCytDZbacnxMKcaHuUh2U8jMUAcShvfXs4phapg2kfmL4aJubMarquFSMKQKvu5vdNejTAskVxPBAJuMXhvHndpxfEmCTgTD3KjxyVXRYXG2";
+const SENDMAIL_URL = process.env.VUE_APP_SENDMAIL_URL;
+const SAVEMAIL_URL = process.env.VUE_APP_SAVEMAIL_URL;
+const TOKEN = `Special ${process.env.VUE_APP_TOKEN}`;
 
 const schema = Joi.object({
   from: Joi.string()
@@ -286,23 +288,3 @@ export default {
   }
 };
 </script>
-
-
-  // data: () => ({
-  //   loading: false,
-  //   errorMessage: '',
-  //   email: {
-  //     email: '',
-  //     fromName: '',
-  //     message: '',
-  //     subject: `${fromName} vous a envoyé un message`,
-  //     to: 'contact@laendrun.ch',
-  //   }
-  // }),
-  // methods: {
-  //   send() {
-  //     this.erroMessage = '';
-  //     console.log('SENT');
-  //     this.erroMessage = 'SENT';
-  //   }
-  // },

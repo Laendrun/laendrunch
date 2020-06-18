@@ -1,11 +1,14 @@
+require('dotenv').config();
 const mysql = require('mysql');
 const util = require('util');
 
+console.log(process.env.DB_URL);
+
 exports.config = {
-    host: "lx3d0.myd.infomaniak.com",
-    user: "lx3d0_api_user",
-    password: "CLtAch6c9hatm76",
-    database: "lx3d0_api"
+    host: process.env.DB_URL,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 }
 
 exports.makeDb = (config) => {
@@ -13,11 +16,10 @@ exports.makeDb = (config) => {
 
     return {
         query(sql, args) {
-            return util.promisify(conn.query)
-                .call(conn, sql, args);
+            return util.promisify(conn.query);
         },
         close() {
-            return util.promisify(conn.end().call(conn));
+            return util.promisify(conn.end());
         }
     }
 }

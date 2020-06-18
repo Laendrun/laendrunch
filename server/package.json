@@ -4,7 +4,8 @@
   "description": "laendrun.ch backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "env NODE_ENV=production node index.js",
+    "dev": "env NODE_ENV=dev nodemon index.js"
   },
   "author": "Simon Aeby",
   "license": "MIT",
