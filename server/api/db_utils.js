@@ -2,7 +2,7 @@ require('dotenv').config();
 const mysql = require('mysql');
 const util = require('util');
 
-console.log(process.env.DB_URL);
+// console.log(process.env.DB_URL);
 
 exports.config = {
     host: process.env.DB_URL,
@@ -16,10 +16,11 @@ exports.makeDb = (config) => {
 
     return {
         query(sql, args) {
-            return util.promisify(conn.query);
+            return util.promisify(conn.query)
+                .call(conn, sql, args);
         },
         close() {
-            return util.promisify(conn.end());
+            return util.promisify(conn.end().call(conn));
         }
     }
 }

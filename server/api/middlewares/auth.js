@@ -24,6 +24,7 @@ async function checkTokenSetUser(req, res, next) {
 
             try {
                 const found = await db.query(sql);
+                console.log(found);
                 if (found[0]) {
                     const special = {
                         type: 'special',
