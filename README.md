@@ -17,6 +17,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
 - [x] @hapi/joi
 - [x] vue-cli
 - [x] @fortawesome/fontawesome-free
+- [x] dotenv
 
 ## Version history
 
@@ -81,6 +82,7 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
     - Backend
         - Added route /special for contact form
     - Frontend
+        - All routes related to login and dashboard are removed from now, I'll add them back later when it's correctly working. The following changes (renaming, creation, etc) have been done but not implemented.
         - Renamed /login to /adminlogin
             - /adminlogin will be used by me to connect
         - Renamed /dashboard to /admin

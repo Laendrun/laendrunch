@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 const app = express();
+const morgan_type = process.env.NODE_ENV = 'dev' ? 'dev' : 'tiny';
 
 const emailRoutes = require('./api/routes/email');
 const authRoutes = require('./api/routes/auth');
@@ -8,6 +11,7 @@ const userRoutes = require('./api/routes/user');
 
 const middlewares = require('./api/middlewares/auth.js');
 
+app.use(morgan(morgan_type));
 app.use(cors());
 app.use(express.json());
 app.use(middlewares.checkTokenSetUser);

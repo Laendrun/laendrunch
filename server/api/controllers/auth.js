@@ -63,7 +63,7 @@ exports.auth_signup = async (req, res, next) => {
 }
 
 exports.auth_login = async (req, res, next) => {
-    const db = makeDb(db_utils.config);
+    const db = db_utils.makeDb(db_utils.config);
     // validate user
     const { error, value } = login_schema.validate(req.body);
 
@@ -106,7 +106,7 @@ exports.auth_login = async (req, res, next) => {
 }
 
 function createToken(user, res, next) {
-    const SECRET = '8T6D2EK6E4nRDPgnMyp7cd6rh6mqTnBNxxZ8sb8jZ7rbXkPe93PxK3txFbk4JdKWrRRr53QhMfyRFRRd8CakrEFGV5WLwVeRB3CTdqD7kmnMWsPsL97vCSFJwDstet6pZcQzU8HCJqH475N6F7BMEKWS8nfFBrnMtL3fTwDcapchZUCAa3ThP3eXTy5TFnA5UcjHZQSHB5jPgRwnhFHt74c5TpECE3jDGqWQnwrvAWup7dZ9MCTwQ4z34AC74Tnx';
+    const SECRET = process.env.JWT_SECRET;
 
     const payload = {
         _id: user._id,
