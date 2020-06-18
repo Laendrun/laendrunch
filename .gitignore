@@ -1,3 +1,7 @@
 node_modules/*
 
 server/node_modules/*
+
+public/dist/*
+client/.env
+server/.env

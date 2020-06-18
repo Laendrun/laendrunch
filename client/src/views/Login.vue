@@ -75,9 +75,10 @@ export default {
           })
           .then(result => {
             localStorage.token = result.token;
+            const redirect = result.role_id == 1 ? "/dashboard" : "/admin";
             this.loading = false;
             this.successMessage = "Connecté";
-            this.$router.push("/dashboard");
+            this.$router.push(redirect);
           })
           .catch(error => {
             this.loading = false;
@@ -98,6 +99,10 @@ export default {
       }
 
       return false;
+    },
+    getUserId() {
+      let token = localStorage.token.split(".")[1];
+      console.log(btoa(token));
     }
   }
 };

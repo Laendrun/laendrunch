@@ -111,7 +111,8 @@ function createToken(user, res, next) {
     const payload = {
         _id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        role_id: user.role_id
     };
 
     jwt.sign(payload, SECRET, {
@@ -121,7 +122,8 @@ function createToken(user, res, next) {
             error422(res, next);
         } else {
             res.json({
-                token
+                token: token,
+                role_id: user.role_id
             });
         }
     });
