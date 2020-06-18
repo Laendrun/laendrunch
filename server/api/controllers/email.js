@@ -12,7 +12,6 @@ const email_schema = Joi.object({
 });
 
 exports.email_send = (req, res, next) => {
-    const SENDMAIL_URL = 'http://sendmail.laendrun.ch/api/mail/send.php';
     const body =
     {
         to: req.body.to,
@@ -22,9 +21,8 @@ exports.email_send = (req, res, next) => {
         subject: req.body.subject,
     };
 
-    console.log(body);
     // send email
-    axios.post(SENDMAIL_URL, body)
+    axios.post(process.env.SENDMAIL_API_URL, body)
         .then((response) => {
             res.status(201).json({
                 message: response.data.message,
@@ -48,7 +46,6 @@ exports.email_save = async (req, res, next) => {
 
         try {
             const email = await db.query(sql);
-            console.log(email);
             return res.status(201).json({
                 email: email,
             });

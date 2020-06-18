@@ -26,28 +26,28 @@ const routes = [
     name: 'Home',
     component: Home,
   },
-  {
-    path: '/adminlogin',
-    name: 'AdminLogin',
-    component: AdminLogin
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    beforeEnter: isLoggedIn
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: Admin,
-    beforeEnter: isLoggedIn
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-  },
+  // {
+  //   path: '/adminlogin',
+  //   name: 'AdminLogin',
+  //   component: AdminLogin
+  // },
+  // {
+  //   path: '/dashboard',
+  //   name: 'Dashboard',
+  //   component: Dashboard,
+  //   beforeEnter: isLoggedIn
+  // },
+  // {
+  //   path: '/admin',
+  //   name: 'Admin',
+  //   component: Admin,
+  //   beforeEnter: isLoggedIn
+  // },
+  // {
+  //   path: '/login',
+  //   name: 'Login',
+  //   component: Login,
+  // },
   {
     path: '*',
     name: 'Not Found',
