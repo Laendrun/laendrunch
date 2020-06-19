@@ -95,3 +95,12 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - Redirects user to / when the page they're trying to access doesn't exist
         - Added a basic user list in the admin dashboard page
         - Sending message fetch on a new route
+- v1.6.0
+    - Backend
+        - role_id is returned alongside the token at login to be used on the frontend.
+        - Added a isAdmin controller (Issue #22).
+    - Frontend
+        - Created a new component to be used in the admin dashboard
+            - AccordionUserItem for the users Accordion
+        - Installed bootstrap, jquery and popper.js on the client side
+            - I just added the bootswatch library at first so the JS components from bootstrap didn't work.
