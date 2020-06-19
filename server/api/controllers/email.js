@@ -1,7 +1,7 @@
 const axios = require('axios');
 const mysql = require('mysql');
 const Joi = require('@hapi/joi');
-const db_utils = require('../db_utils.js');
+const { makeDb, config } = require('../db_utils.js');
 
 const email_schema = Joi.object({
     to: Joi.string().email({ tlds: { allow: false } }).required(),
@@ -10,11 +10,6 @@ const email_schema = Joi.object({
     message: Joi.string().required(),
     subject: Joi.required(),
 });
-
-const get_email = Joi.object({
-    sender: Joi.string().email({ tlds: { allow: false } }).optional(),
-    recipient: Joi.string().email({ tlds: { allow: false } }).optional(),
-})
 
 exports.email_send = (req, res, next) => {
     const body =
@@ -40,7 +35,7 @@ exports.email_send = (req, res, next) => {
 }
 
 exports.email_save = async (req, res, next) => {
-    const db = db_utils.makeDb(db_utils.config);
+    const db = makeDb(config);
     // console.log(db_utils.config);
     const { error, value } = email_schema.validate(req.body);
 
@@ -72,65 +67,42 @@ exports.email_save = async (req, res, next) => {
 }
 
 exports.get_email = async (req, res, next) => {
-    const db = db_utils.makeDb(db_utils.config);
+    const db = makeDb(config);
+    const to = req.query.to;
+    const from = req.query.from;
 
-    const { error, value } = get_email.validate(req.body);
+    let inserts;
+    let condition;
 
-    console.log(value);
-
-    if (!error) {
-
-        let inserts;
-        let condition;
-
-        if (value.recipient || value.sender) {
-            if (value.recipient && !value.sender) {
-                condition = "WHERE ?? = ?";
-                inserts = ['mails', 'to_mail', value.recipient];
-            }
-
-            if (value.sender && !value.recipient) {
-                condition = "WHERE ?? = ?";
-                inserts = ['mails', 'from_mail', value.sender]
-            }
-
-            if (value.recipient && value.sender) {
-                condition = "WHERE ?? = ? AND ?? = ?";
-                inserts = ['mails', 'from_mail', value.sender, 'to_mail', value.recipient];
-            }
-
-
-        } else {
-            condition = "WHERE 1"
-            inserts = ['mails'];
-        }
-
-        let sql = `SELECT * FROM ?? ${condition}`;
-        // let sql = "SELECT * FROM ?? WHERE 1";
-        // let inserts = ['mails'];
-        sql = mysql.format(sql, inserts);
-        console.log(sql);
-
-        try {
-            const mails = await db.query(sql);
-            return res.status(200).json({
-                emails: mails
-            })
-
-        } catch (err) {
-            const error = new Error(err);
-            res.status(500);
-            next(error);
-        } finally {
-            await db.close();
-        }
-
+    if (!from && !to) {
+        condition = "1";
+        inserts = ['mails'];
+    } else if (from && !to) {
+        condition = "?? = ?";
+        inserts = ['mails', 'from_mail', from];
+    } else if (to && !from) {
+        condition = "?? = ?";
+        inserts = ['mails', 'to_mail', to];
     } else {
-        return res.status(403).json({
-            error: 'Validation failed',
-            message: error.message,
-        })
+        condition = "?? = ? AND ?? = ?";
+        inserts = ['mails', 'to_mail', to, 'from_mail', from];
     }
 
 
+    let sql = `SELECT * FROM ?? WHERE ${condition}`;
+    sql = mysql.format(sql, inserts);
+
+    try {
+        const mails = await db.query(sql);
+        return res.status(200).json({
+            emails: mails
+        })
+
+    } catch (err) {
+        const error = new Error(err);
+        res.status(500);
+        next(error);
+    } finally {
+        await db.close();
+    }
 }

@@ -104,3 +104,11 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - AccordionUserItem for the users Accordion
         - Installed bootstrap, jquery and popper.js on the client side
             - I just added the bootswatch library at first so the JS components from bootstrap didn't work.
+- v1.7.0
+    - Backend
+        - Get /email modified
+            - You can now make specific request on this endpoint
+                - GET /email -> returns all saved emails
+                - GET /email?to=```email``` -> returns all saved emails sent to ```email```
+                - GET /email?from=```email``` -> returns all saved emails sent from ```email```
+                - GET /email?from=```from_email```&to=```to_email``` -> returns all saved emails sent from ```from_email``` to ```to_email```
