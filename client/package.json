@@ -9,8 +9,12 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@hapi/joi": "^17.1.1",
+    "bootstrap": "^4.5.0",
     "bootswatch": "^4.5.0",
     "core-js": "^3.6.5",
+    "jquery": "^3.5.1",
+    "jsquery": "^1.1.1",
+    "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },

@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const EmailController = require('../controllers/email');
+const { email_send, email_save, get_email } = require('../controllers/email');
+const { isAdmin } = require('../middlewares/auth');
 
-router.post('/send', EmailController.email_send);
+router.post('/send', email_send);
 
-router.post('/save', EmailController.email_save);
+router.post('/save', isAdmin, email_save);
 
-router.get('/', EmailController.get_email);
+router.get('/', isAdmin, get_email);
 
 module.exports = router;
