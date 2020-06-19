@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const UserController = require('../controllers/user');
+const { patch_password, patch_email, patch_username, get_user } = require('../controllers/user');
+const { isAdmin } = require('../middlewares/auth');
 
-router.patch('/password', UserController.patch_password);
+router.patch('/password', patch_password);
 
-router.patch('/email', UserController.patch_email);
+router.patch('/email', patch_email);
 
-router.patch('/username', UserController.patch_username);
+router.patch('/username', patch_username);
 
-router.get('/', UserController.get_user);
+router.get('/', isAdmin, get_user);
 
 module.exports = router;

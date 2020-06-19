@@ -99,10 +99,6 @@ export default {
       }
 
       return false;
-    },
-    getUserId() {
-      let token = localStorage.token.split(".")[1];
-      console.log(btoa(token));
     }
   }
 };
