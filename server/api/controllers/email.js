@@ -11,6 +11,11 @@ const email_schema = Joi.object({
     subject: Joi.required(),
 });
 
+const get_email = Joi.object({
+    sender: Joi.string().email({ tlds: { allow: false } }).optional(),
+    recipient: Joi.string().email({ tlds: { allow: false } }).optional(),
+})
+
 exports.email_send = (req, res, next) => {
     const body =
     {
@@ -57,6 +62,11 @@ exports.email_save = async (req, res, next) => {
         } finally {
             await db.close();
         }
+    } else {
+        return res.status(403).json({
+            error: 'Validation failed',
+            message: error.message,
+        })
     }
 
 }
@@ -64,21 +74,63 @@ exports.email_save = async (req, res, next) => {
 exports.get_email = async (req, res, next) => {
     const db = db_utils.makeDb(db_utils.config);
 
-    let sql = "SELECT * FROM ?? WHERE 1";
-    let inserts = ['mails'];
-    sql = mysql.format(sql, inserts);
+    const { error, value } = get_email.validate(req.body);
 
-    try {
-        const mails = await db.query(sql);
-        return res.status(200).json({
-            emails: mails
+    console.log(value);
+
+    if (!error) {
+
+        let inserts;
+        let condition;
+
+        if (value.recipient || value.sender) {
+            if (value.recipient && !value.sender) {
+                condition = "WHERE ?? = ?";
+                inserts = ['mails', 'to_mail', value.recipient];
+            }
+
+            if (value.sender && !value.recipient) {
+                condition = "WHERE ?? = ?";
+                inserts = ['mails', 'from_mail', value.sender]
+            }
+
+            if (value.recipient && value.sender) {
+                condition = "WHERE ?? = ? AND ?? = ?";
+                inserts = ['mails', 'from_mail', value.sender, 'to_mail', value.recipient];
+            }
+
+
+        } else {
+            condition = "WHERE 1"
+            inserts = ['mails'];
+        }
+
+        let sql = `SELECT * FROM ?? ${condition}`;
+        // let sql = "SELECT * FROM ?? WHERE 1";
+        // let inserts = ['mails'];
+        sql = mysql.format(sql, inserts);
+        console.log(sql);
+
+        try {
+            const mails = await db.query(sql);
+            return res.status(200).json({
+                emails: mails
+            })
+
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+
+    } else {
+        return res.status(403).json({
+            error: 'Validation failed',
+            message: error.message,
         })
-
-    } catch (err) {
-        const error = new Error(err);
-        res.status(500);
-        next(error);
-    } finally {
-        await db.close();
     }
+
+
 }
