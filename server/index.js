@@ -9,12 +9,12 @@ const emailRoutes = require('./api/routes/email');
 const authRoutes = require('./api/routes/auth');
 const userRoutes = require('./api/routes/user');
 
-const middlewares = require('./api/middlewares/auth.js');
+const { checkTokenSetUser, isLoggedIn, isSpecial, isLoggedIn } = require('./api/middlewares/auth.js');
 
 app.use(morgan(morgan_type));
 app.use(cors());
 app.use(express.json());
-app.use(middlewares.checkTokenSetUser);
+app.use(checkTokenSetUser);
 
 app.get('/home', (req, res, next) => {
   res.json({
@@ -23,9 +23,9 @@ app.get('/home', (req, res, next) => {
   });
 });
 
-app.use('/email', middlewares.isLoggedIn, emailRoutes);
-app.use('/special', middlewares.isSpecial, emailRoutes);
-app.use('/user', middlewares.isLoggedIn, userRoutes);
+app.use('/email', isLoggedIn, emailRoutes);
+app.use('/special', isSpecial, emailRoutes);
+app.use('/user', isLoggedIn, userRoutes);
 app.use('/auth', authRoutes);
 
 function notFound(req, res, next) {
