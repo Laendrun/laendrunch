@@ -26,24 +26,19 @@
           </div>
         </div>
         <!-- Messages tab -->
-        <div class="tab-pane fade" id="messages"></div>
+        <div class="tab-pane fade" id="messages">
+          <div class="row mt-3">
+            <email-card v-for="message in messages" :message="message" :key="message._id" />
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
-          // <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
-          //   <div class="card-header">Header</div>
-          //   <div class="card-body">
-          //     <h4 class="card-title">Dark card title</h4>
-          //     <p
-          //       class="card-text"
-          //     >Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          //   </div>
-          // </div>
-
 <script>
 import AccordionUserItem from "../components/AccordionUserItem.vue";
+import EmailCard from "../components/EmailCard";
 const USER_URL = "//api.laendrun.ch/user";
 const MESSAGE_URL = "//api.laendrun.ch/email";
 
@@ -53,7 +48,8 @@ export default {
     messages: ""
   }),
   components: {
-    AccordionUserItem
+    AccordionUserItem,
+    EmailCard
   },
   mounted() {
     fetch(USER_URL, {
@@ -78,7 +74,6 @@ export default {
       .then(res => res.json())
       .then(result => {
         this.messages = result.emails;
-        console.log(this.messages);
       });
   }
 };

@@ -120,3 +120,9 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - This route now orders the users by role_id DESC which makes the admins appear before the "simple" users in the list for the admin
         - *New* POST /user/create route
             - This route let's admins create new users, they can send the role_id when creating the user or not. role_id defaults to user.
+v1.8.0
+    - Backend
+        - No changes
+    - Frontend
+        - Added a new component EmailCard to easily generate card to display messages (emails) saved in the database.
+        - Used the new component in the admin dashboard page to display messages saved in the database.

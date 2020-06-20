@@ -3,6 +3,16 @@
     <div class="card-header" :id="user.headingId">
       <h5 class="mb-0">
         <button
+          v-if="user.role_id === 2"
+          class="btn btn-link collapsed"
+          type="button"
+          data-toggle="collapse"
+          :data-target="user.collapseIdTarget"
+          aria-expanded="false"
+          :aria-controls="user.collapseId"
+        >⭐{{ user.username }}</button>
+        <button
+          v-else
           class="btn btn-link collapsed"
           type="button"
           data-toggle="collapse"
