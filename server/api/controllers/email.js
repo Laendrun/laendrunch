@@ -21,11 +21,17 @@ exports.email_send = (req, res, next) => {
         subject: req.body.subject,
     };
 
+    this.email_save(req, res, next);
+
     // send email
     axios.post(process.env.SENDMAIL_API_URL, body)
         .then((response) => {
             res.status(201).json({
-                message: response.data.message,
+                to: body.to,
+                from: body.from,
+                fromName: body.fromName,
+                message: body.message,
+                subject: body.subject
             });
         })
         .catch((error) => {
@@ -40,6 +46,9 @@ exports.email_save = async (req, res, next) => {
     const { error, value } = email_schema.validate(req.body);
 
     if (!error) {
+
+        // return saveMail(req.body);
+
         let sql = "INSERT INTO mails values (?, ?, ?, ?, ?, ?, ?)";
         let inserts = [null, new Date(), req.body.from, req.body.fromName, req.body.to, req.body.subject, req.body.message];
         sql = mysql.format(sql, inserts);

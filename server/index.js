@@ -9,7 +9,7 @@ const emailRoutes = require('./api/routes/email');
 const authRoutes = require('./api/routes/auth');
 const userRoutes = require('./api/routes/user');
 
-const { checkTokenSetUser, isLoggedIn, isSpecial, isAdmin } = require('./api/middlewares/auth.js');
+const { checkTokenSetUser, isLoggedIn, isSpecial } = require('./api/middlewares/auth.js');
 
 app.use(morgan(morgan_type));
 app.use(cors());
