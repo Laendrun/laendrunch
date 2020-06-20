@@ -120,9 +120,10 @@ exports.patch_username = async (req, res, next) => {
 exports.get_user = async (req, res, next) => {
     const db = db_utils.makeDb(db_utils.config);
 
-    let sql = "SELECT ??, ??, ??, ?? FROM ?? WHERE 1 ORDER BY ? DESC";
+    let sql = "SELECT ??, ??, ??, ?? FROM ?? WHERE 1 ORDER BY ?? DESC";
     let inserts = ['_id', 'username', 'email', 'role_id', 'users', 'role_id'];
     sql = mysql.format(sql, inserts);
+    console.log(sql);
 
     try {
         const users = await db.query(sql);

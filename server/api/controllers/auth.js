@@ -140,7 +140,7 @@ exports.auth_create = async (req, res, next) => {
                 let inserts = ['users', newUser.username, newUser.password, newUser.email, newUser.role_id];
                 sql = mysql.format(sql, inserts);
                 const insertedUser = await db.query(sql);
-                console.log(insertedUser);
+                // console.log(insertedUser);
                 return res.status(201).json({
                     "id": insertedUser.insertId,
                     "username": newUser.username,
