@@ -1,0 +1,175 @@
+FORMAT: 1A
+HOST: https://api.laendrun.ch
+
+# Laendrun.ch Backend API
+
+This API is the backend API of my personnal website.
+
+GitHub Repo : https://github.com/laendrun/laendrunch
+
+Check the GitHub Repo if you have a problem with this API or to request a modification of the documentation.
+
+# Group Email
+
+You can send and save emails.
+
+You can also retrieve all saved emails, a single saved email or all saved emails from or to a specific email adress. You can also request emails from a specific address to another specific address.
+
+## Get all emails [GET /email{?from}{?to}]
+
+This endpoint let's you retrieve all emails saved in the database.
+
++ Parameters
+    + from: sender@mail.com (string, optional) - The sender email address.
+    + to: recipient@mail.com (string, optional) - The recipient email address.
+
++ Request
+    + Headers
+
+            Authorization : Bearer admin_token
+
++ Response 200 (application/json)
+    + Attributes
+        + emails (array[Email])
+
+## Send an email [POST /email/send]
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+    + Attributes
+        + Include Email
+
++ Response 201 (application/json)
+    + Attributes
+        + Include Email
+
+## Save an email [POST /email/save]
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+
+    + Attributes
+        + Include Email
+
++ Response 201 (application/json)
+    + Attributes
+        + Include Email
+
+# Group Special
+
+This endpoint has the same routes as the Email group.
+
+It's used by contact forms to send or save emails.
+
+## Send an email [POST /special/send]
+
++ Request
+    + Headers
+
+            Authorization: Special token
+    + Attributes
+        + Include Email
+    
++ Response 201 (application/json)
+    + Attributes
+        + Include Email
+
+## Save an email [POST /special/save]
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+
++ Response 201 (application/json)
+    + Attributes
+        + Include Email
+
+# Group User
+
+These endpoints let a logged in user change their information, either password, username or email. 
+
+A logged in user can only change their information.
+
+As an admin you can also retrieve an array of all users. You can also change other user's information.
+
+## Change a password [PATCH /user/password]
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+    + Attributes
+        + password: `password` (string)
++ Response 200 (application/json)
+    + Attributes
+        + Include User
+
+## Change an email [PATCH /user/email]
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+    + Attributes
+        + email: `user@mail.com` (string)
++ Response 200 (application/json)
+    + Attributes
+        + Include User
+
+## Change a username [PATCH /user/username]
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+    + Attributes
+        + username: `laendrun` (string)
++ Response 200 (application/json)
+    + Attributes
+        + Include User
+
+# Group Auth
+
+## Signup [POST /auth/signup]
+
++ Request
+    + Attributes
+        + username: `laendrun` (string)
+        + password: `password` (string)
+        + email: `user@mail.com` (string)
+
++ Response 201 (application/json)
+    + Attributes
+        + Include User
+
+## Login [POST /auth/login]
+
++ Request
+    + Attributes
+        + username: `laendrun` (string)
+        + password: `password`(string)
+
++ Response 200 (application/json)
+    + Attributes
+        + token: `JSON Web Token` (string)
+        + role_id: `1`(number)
+
+# Data Structures
+
+## Email (object)
++ from: `sender@mail.com` (string) - Sender email address.
++ fromName: `Firstname Lastname` (string) - Sender name.
++ subject: `Test email` (string) - Email subject.
++ message: `I'm trying to use my backend API to send and save emails` (string) - Email message.
++ to: `recipient@mail.com` (string) - Recipient email address.
+
+## User (object)
++ username: `laendrun` (string) - User username.
++ email: `user@mail.com` (string) - User email.
++ password: `password` (string) - User password.
++ role_id: `1` (number) - Role ID.
