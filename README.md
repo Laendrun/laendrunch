@@ -104,3 +104,19 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
             - AccordionUserItem for the users Accordion
         - Installed bootstrap, jquery and popper.js on the client side
             - I just added the bootswatch library at first so the JS components from bootstrap didn't work.
+- v1.7.0
+    - Backend
+        - Get /email modified
+            - You can now make specific request on this endpoint
+                - GET /email -> returns all saved emails
+                - GET /email?to=```email``` -> returns all saved emails sent to ```email```
+                - GET /email?from=```email``` -> returns all saved emails sent from ```email```
+                - GET /email?from=```from_email```&to=```to_email``` -> returns all saved emails sent from ```from_email``` to ```to_email```
+        - POST /email/send modified
+            - When using /email/send it now saves the sent email to the database too
+            - Requesting this endpoint now responds according to the documentation
+                - Responds with the sent emails
+        - GET /user modified
+            - This route now orders the users by role_id DESC which makes the admins appear before the "simple" users in the list for the admin
+        - *New* POST /user/create route
+            - This route let's admins create new users, they can send the role_id when creating the user or not. role_id defaults to user.
