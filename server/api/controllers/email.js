@@ -12,32 +12,43 @@ const email_schema = Joi.object({
 });
 
 exports.email_send = (req, res, next) => {
-    const body =
-    {
-        to: req.body.to,
-        from: req.body.from,
-        fromName: req.body.fromName,
-        message: req.body.message,
-        subject: req.body.subject,
-    };
+    const { error, value } = email_schema.validate(req.body);
 
-    this.email_save(req, res, next);
+    if (!error) {
+        const body =
+        {
+            to: req.body.to,
+            from: req.body.from,
+            fromName: req.body.fromName,
+            message: req.body.message,
+            subject: req.body.subject,
+        };
 
-    // send email
-    axios.post(process.env.SENDMAIL_API_URL, body)
-        .then((response) => {
-            res.status(201).json({
-                to: body.to,
-                from: body.from,
-                fromName: body.fromName,
-                message: body.message,
-                subject: body.subject
+        this.email_save(req, res, next);
+
+        // send email
+        axios.post(process.env.SENDMAIL_API_URL, body)
+            .then((response) => {
+                res.status(201).json({
+                    to: body.to,
+                    from: body.from,
+                    fromName: body.fromName,
+                    message: body.message,
+                    subject: body.subject
+                });
+            })
+            .catch((error) => {
+                res.status(500);
+                next(error);
             });
+    } else {
+        // validation failed
+        return res.status(403).json({
+            error: 'Validation failed',
+            message: error.message,
         })
-        .catch((error) => {
-            res.status(500);
-            next(error);
-        });
+    }
+
 }
 
 exports.email_save = async (req, res, next) => {
