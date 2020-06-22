@@ -6,13 +6,21 @@
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#users">Utilisateurs</a>
+          <a class="nav-link" data-toggle="tab" href="#users">
+            Utilisateurs
+            <span class="badge badge-info badge-pill">{{ usersCount }}</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#messages">Messages</a>
+          <a class="nav-link" data-toggle="tab" href="#messages">
+            Messages
+            <span class="badge badge-info badge-pill">{{ messagesCount }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <button @click="logout" class="nav-link">Déconnexion</button>
         </li>
       </ul>
-
       <div id="tab-content" class="tab-content">
         <!-- Users tab -->
         <div class="tab-pane fade active show" id="users">
@@ -51,6 +59,12 @@ export default {
     AccordionUserItem,
     EmailCard
   },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      this.$router.push("/login");
+    }
+  },
   mounted() {
     fetch(USER_URL, {
       headers: {
@@ -75,6 +89,14 @@ export default {
       .then(result => {
         this.messages = result.emails;
       });
+  },
+  computed: {
+    messagesCount() {
+      return this.messages.length;
+    },
+    usersCount() {
+      return this.users.length;
+    }
   }
 };
 </script>

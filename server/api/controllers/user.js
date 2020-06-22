@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const db_utils = require('../db_utils');
+const { makeDb, config } = require('../db_utils');
 const Joi = require('@hapi/joi');
 const bcrypt = require('bcrypt');
 
@@ -16,7 +16,7 @@ const username = Joi.object({
 })
 
 exports.patch_password = async (req, res, next) => {
-    const db = db_utils.makeDb(db_utils.config);
+    const db = makeDb(config);
     const { error, value } = password.validate(req.body);
 
     if (!error) {
@@ -50,7 +50,7 @@ exports.patch_password = async (req, res, next) => {
 }
 
 exports.patch_email = async (req, res, next) => {
-    const db = db_utils.makeDb(db_utils.config);
+    const db = makeDb(config);
     const { error, value } = email.validate(req.body);
 
     if (!error) {
@@ -79,7 +79,7 @@ exports.patch_email = async (req, res, next) => {
 }
 
 exports.patch_username = async (req, res, next) => {
-    const db = db_utils.makeDb(db_utils.config);
+    const db = makeDb(config);
     const { error, value } = username.validate(req.body);
 
     if (!error) {
@@ -117,24 +117,51 @@ exports.patch_username = async (req, res, next) => {
     }
 }
 
+
 exports.get_user = async (req, res, next) => {
-    const db = db_utils.makeDb(db_utils.config);
 
-    let sql = "SELECT ??, ??, ??, ?? FROM ?? WHERE 1 ORDER BY ?? DESC";
-    let inserts = ['_id', 'username', 'email', 'role_id', 'users', 'role_id'];
-    sql = mysql.format(sql, inserts);
-    console.log(sql);
+    if (req.user.type == 'admin') {
+        const db = makeDb(config);
 
-    try {
-        const users = await db.query(sql);
-        return res.status(200).json({
-            users: users
-        })
-    } catch (err) {
-        const error = new Error(err);
-        res.status(500);
-        next(error);
-    } finally {
-        await db.close();
+        let sql = "SELECT ??, ??, ??, ?? FROM ?? WHERE 1 ORDER BY ?? DESC";
+        let inserts = ['_id', 'username', 'email', 'role_id', 'users', 'role_id'];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const users = await db.query(sql);
+            return res.status(200).json({
+                users: users
+            })
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+    } else if (req.user.type == 'user') {
+        const db = makeDb(config);
+
+        let sql = "SELECT * FROM ?? WHERE ?? = ?";
+        let inserts = ['users', '_id', req.user._id];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const user = await db.query(sql);
+            return res.status(200).json({
+                _id: user[0]._id,
+                username: user[0].username,
+                email: user[0].email,
+                role_id: user[0].role_id
+            })
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
     }
+
+
 }

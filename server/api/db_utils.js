@@ -10,7 +10,14 @@ exports.config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
 }
-
+/**
+ * 
+ * @param {JSON} config DB Configuration for mysql
+ * @param {string} config.host DB Server
+ * @param {string} config.user DB User name
+ * @param {string} config.password DB User password
+ * @param {string} config.database DB Name
+ */
 exports.makeDb = (config) => {
     const conn = mysql.createConnection(config);
 
