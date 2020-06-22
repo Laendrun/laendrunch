@@ -115,14 +115,27 @@ You can find the old repo [there](https://github.com/Laendrun/laendrun_api)
         - POST /email/send modified
             - When using /email/send it now saves the sent email to the database too
             - Requesting this endpoint now responds according to the documentation
-                - Responds with the sent emails
+                - Responds with the sent email
         - GET /user modified
             - This route now orders the users by role_id DESC which makes the admins appear before the "simple" users in the list for the admin
-        - *New* POST /user/create route
+        - **New** POST /user/create route
             - This route let's admins create new users, they can send the role_id when creating the user or not. role_id defaults to user.
 v1.8.0
     - Backend
-        - No changes
+        - Added email schema validation for POST /email/send
+        - Added a new middleware ```setUserType``` which sets ```req.user.type``` to either **admin** or **user**
+        - I can use this middleware in the routes like GET /user
+            - If ```req.user.type``` is **user** -> only return information on the specific user which makes the request
+            - If ```req.user.type``` is **admin** -> return an array of all users
+        - Modified GET /user route to use the new ```setUserType``` middleware
+            - When requesting this endpoint, the server checks the user type, and responds like describe before
     - Frontend
         - Added a new component EmailCard to easily generate card to display messages (emails) saved in the database.
         - Used the new component in the admin dashboard page to display messages saved in the database.
+        - Replaced the Navbar Brand link ```<a>``` tag to a ```<router-link>``` pointing to ```/```. Now clicking the brand name in the top left redirects you to the homepage.
+        - Added a new tab on the admin dashboard which is a *logout* button
+        - Started working on the user's dashboard with a simple profile tab
+            - Profile tab that let's you modify your informations :
+                - [x] Email address
+                - [x] Username
+                - [x] Password

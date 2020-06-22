@@ -173,14 +173,6 @@
         </small>
       </div>
     </div>
-    <div class="footer text-center">
-      <hr />
-      <p>
-        Developped with 🧡 by Simon Aeby -
-        <i class="fab fa-github"></i>
-        <a href="https://github.com/Laendrun?tab=repositories" target="_blank">GitHub</a>
-      </p>
-    </div>
   </section>
 </template>
 

@@ -81,9 +81,25 @@ function isSpecial(req, res, next) {
     }
 }
 
+function setUserType(req, res, next) {
+    switch (req.user.role_id) {
+        case 1:
+            req.user.type = 'user';
+            next();
+            break;
+        case 2:
+            req.user.type = 'admin';
+            next();
+            break;
+        default:
+            req.user.type = 'user';
+    }
+}
+
 module.exports = {
     checkTokenSetUser,
     isLoggedIn,
     isAdmin,
-    isSpecial
+    isSpecial,
+    setUserType
 };
