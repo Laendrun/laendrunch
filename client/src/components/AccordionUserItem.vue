@@ -10,7 +10,7 @@
           :data-target="user.collapseIdTarget"
           aria-expanded="false"
           :aria-controls="user.collapseId"
-        >⭐{{ user.username }}</button>
+        >🛡{{ user.username }}</button>
         <button
           v-else
           class="btn btn-link collapsed"

@@ -139,3 +139,11 @@ v1.8.0
                 - [x] Email address
                 - [x] Username
                 - [x] Password
+- v1.9.0
+    - Backend
+        - Added GET /user/?id=```id``` route
+            - This route let's admin request informations on a specific user by ID.
+    - Frontend
+        - Added a tab in the admin dashboard to create new user
+    - Documentation
+        - Update Backend API Doc

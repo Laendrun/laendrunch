@@ -9,6 +9,8 @@ GitHub Repo : https://github.com/laendrun/laendrunch
 
 Check the GitHub Repo if you have a problem with this API or to request a modification of the documentation.
 
+This documentation isn't 100% accurate. I have not figured everything out yet so I tried my best 😉.
+
 # Group Email
 
 You can send and save emails.
@@ -20,8 +22,8 @@ You can also retrieve all saved emails, a single saved email or all saved emails
 This endpoint let's you retrieve all emails saved in the database.
 
 + Parameters
-    + from: sender@mail.com (string, optional) - The sender email address.
-    + to: recipient@mail.com (string, optional) - The recipient email address.
+    + from: sender@mail.com (string) - The sender email address.
+    + to: recipient@mail.com (string) - The recipient email address.
 
 + Request
     + Headers
@@ -33,6 +35,10 @@ This endpoint let's you retrieve all emails saved in the database.
         + emails (array[Email])
 
 ## Send an email [POST /email/send]
+
+This endpoint let's you send an email.
+
+Before sending, it will be saved in the database.
 
 + Request
     + Headers
@@ -47,11 +53,12 @@ This endpoint let's you retrieve all emails saved in the database.
 
 ## Save an email [POST /email/save]
 
+This endpoint let's you save an email in the database.
+
 + Request
     + Headers
 
             Authorization: Bearer token
-
     + Attributes
         + Include Email
 
@@ -61,11 +68,15 @@ This endpoint let's you retrieve all emails saved in the database.
 
 # Group Special
 
-This endpoint has the same routes as the Email group.
+This resource has almost the same endpoints as the email resource except it uses a different kind of token to authenticate.
 
-It's used by contact forms to send or save emails.
+The tokens used to authenticate with this resource are created manually and have no expiration date.
 
 ## Send an email [POST /special/send]
+
+This endpoint let's you send an email.
+
+Before sending, it will be saved in the database.
 
 + Request
     + Headers
@@ -80,6 +91,8 @@ It's used by contact forms to send or save emails.
 
 ## Save an email [POST /special/save]
 
+This endpoint let's you save an email in the database.
+
 + Request
     + Headers
 
@@ -91,13 +104,13 @@ It's used by contact forms to send or save emails.
 
 # Group User
 
-These endpoints let a logged in user change their information, either password, username or email. 
+This resource let logged in user change their information (email, password, username).
 
-A logged in user can only change their information.
-
-As an admin you can also retrieve an array of all users. You can also change other user's information.
+As an admin you can also retrieve an array of all users.
 
 ## Change a password [PATCH /user/password]
+
+This endpoint let's you change your password.
 
 + Request
     + Headers
@@ -111,6 +124,8 @@ As an admin you can also retrieve an array of all users. You can also change oth
 
 ## Change an email [PATCH /user/email]
 
+This endpoint let's you change your email.
+
 + Request
     + Headers
 
@@ -123,6 +138,8 @@ As an admin you can also retrieve an array of all users. You can also change oth
 
 ## Change a username [PATCH /user/username]
 
+This endpoint let's you change your username.
+
 + Request
     + Headers
 
@@ -133,21 +150,69 @@ As an admin you can also retrieve an array of all users. You can also change oth
     + Attributes
         + Include User
 
-# Group Auth
+## Get user [GET /user]
 
-## Signup [POST /auth/signup]
+You can get multiple responses from this endpoint depending on the token you send along with the request.
+- With a user token, you'll only get information on the user linked to the token.
+- With an admin token, you'll get a list of all users with all their informations.
 
 + Request
-    + Attributes
-        + username: `laendrun` (string)
-        + password: `password` (string)
-        + email: `user@mail.com` (string)
+    + Headers
 
-+ Response 201 (application/json)
+            Authorization: Bearer admin_token
+
++ Response 200 (application/json)
+    + Attributes
+        + users (array[User])
+
+
++ Request
+    + Headers
+
+            Authorization: Bearer token
+
++ Response 200 (application/json)
     + Attributes
         + Include User
 
+## Get a specific user [GET /user/{?id}]
+
+This endpoint let's an admin request information on a specific user by ID.
+
++ Parameters
+    + id: 1 (number) - ID of the user to request data from.
+
++ Request
+    + Headers
+
+            Authorization : Bearer admin_token
+
++ Response 200 (application/json)
+    + Attributes
+        + Include User
+
+# Group Auth
+
+This resource holds all the endpoints related to authentication (login, signup, create).
+
+## Signup [POST /auth/signup]
+
+This endpoint let's a user signup to my website.
+
+*API Route available but no options on the frontend.*
+
++ Request
+    + Attributes
+        + Include User
+
++ Response 201 (application/json)
+    + Attributes
+        + _id: `1` (number)
+        + username: `laendrun` (string)
+
 ## Login [POST /auth/login]
+
+This endpoint let's a user login to my website.
 
 + Request
     + Attributes
@@ -159,17 +224,36 @@ As an admin you can also retrieve an array of all users. You can also change oth
         + token: `JSON Web Token` (string)
         + role_id: `1`(number)
 
+## Create [POST /auth/create]
+
+This endpoint let's an admin user create a new user.
+
++ Request
+    + Headers
+
+            Authorization: Bearer admin_token
+    + Attributes
+        + username: `laendrun` (string)
+        + password: `password` (string)
+        + role_id: `1` (number)
+
++ Response 201 (application/json)
+    + Attributes
+        + Include User
+
 # Data Structures
 
 ## Email (object)
-+ from: `sender@mail.com` (string) - Sender email address.
-+ fromName: `Firstname Lastname` (string) - Sender name.
-+ subject: `Test email` (string) - Email subject.
-+ message: `I'm trying to use my backend API to send and save emails` (string) - Email message.
-+ to: `recipient@mail.com` (string) - Recipient email address.
++ `_id`: `1` (number) - Email ID in the database.
++ `from`: `sender@mail.com` (string) - Sender email address.
++ `fromName`: `Firstname Lastname` (string) - Sender name.
++ `subject`: `Test email` (string) - Email subject.
++ `message`: `I'm trying to use my backend API to send and save emails` (string) - Email message.
++ `to`: `recipient@mail.com` (string) - Recipient email address.
 
 ## User (object)
 + username: `laendrun` (string) - User username.
 + email: `user@mail.com` (string) - User email.
 + password: `password` (string) - User password.
 + role_id: `1` (number) - Role ID.
++ id: `1` (number) - User ID in the database.

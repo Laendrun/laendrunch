@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { patch_password, patch_email, patch_username, get_user, patch_user } = require('../controllers/user');
-const { setUserType } = require('../middlewares/auth');
+const { patch_password, patch_email, patch_username, get_user, get_user_id } = require('../controllers/user');
+const { setUserType, isAdmin } = require('../middlewares/auth');
 
 router.patch('/password', patch_password);
 

@@ -29,6 +29,7 @@ exports.email_send = (req, res, next) => {
         // send email
         axios.post(process.env.SENDMAIL_API_URL, body)
             .then((response) => {
+                console.log(saved_mail);
                 res.status(201).json({
                     to: body.to,
                     from: body.from,
@@ -67,7 +68,12 @@ exports.email_save = async (req, res, next) => {
         try {
             const email = await db.query(sql);
             return res.status(201).json({
-                email: email,
+                _id: email.insertId,
+                from: req.body.from,
+                fromName: req.body.fromName,
+                to: req.body.to,
+                subject: req.body.subject,
+                message: req.body.message
             });
         } catch (err) {
             const error = new Error(err);
