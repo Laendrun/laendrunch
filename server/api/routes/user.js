@@ -12,7 +12,7 @@ router.patch('/username', patch_username);
 
 router.get('/', setUserType, get_user);
 
-router.delete('/', isAdmin, delete_user);
+router.delete('/delete', isAdmin, delete_user);
 
 // router.patch('/', patch_user);
 

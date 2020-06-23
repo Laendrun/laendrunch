@@ -144,9 +144,11 @@ v1.8.0
         - Added GET /user/?id=```id``` route
             - This route let's admin request informations on a specific user by ID.
         - Added DELETE /user/?id=```id``` route
-            - Route to delete user
+            - Route to delete user with the specified id
     - Frontend
         - Added a tab in the admin dashboard to create new user
         - Added a button to delete a user on the admin dashboard
+        - By default, the admin dashboard shows only messages sent to contact@laendrun.ch
+            - There's a toggle switch to show all the messages
     - Documentation
         - Update Backend API Doc

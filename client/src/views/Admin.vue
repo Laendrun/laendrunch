@@ -26,7 +26,12 @@
       </ul>
       <div id="tab-content" class="tab-content">
         <!-- Users tab -->
-        <div class="tab-pane fade active show" id="users">
+        <div class="tab-pane fade active show mb-2" id="users">
+          <div class="alert alert-danger" role="alert" v-if="errorMessage">{{ errorMessage }}</div>
+          <div class="alert alert-success" role="alert" v-if="successMessage">{{ successMessage }}</div>
+          <div v-if="loading">
+            <img src="../assets/infinity.svg" />
+          </div>
           <div class="accordion" id="userAccordion">
             <accordion-user-item
               v-for="user in users"
@@ -38,13 +43,25 @@
           </div>
         </div>
         <!-- Messages tab -->
-        <div class="tab-pane fade" id="messages">
+        <div class="tab-pane fade mb-2" id="messages">
+          <div class="row mt-3">
+            <div class="col-sm">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="all_emails" />
+                <label
+                  class="custom-control-label"
+                  v-on:click="fetch_all_messages"
+                  for="all_emails"
+                >Afficher tous les messages</label>
+              </div>
+            </div>
+          </div>
           <div class="row mt-3">
             <email-card v-for="message in messages" :message="message" :key="message._id" />
           </div>
         </div>
         <!-- Create User tab -->
-        <div class="tab-pane fade" id="createUser">
+        <div class="tab-pane fade mb-2" id="createUser">
           <div class="alert alert-danger" role="alert" v-if="errorMessage">{{ errorMessage }}</div>
           <div class="alert alert-success" role="alert" v-if="successMessage">{{ successMessage }}</div>
           <div v-if="loading">
@@ -89,7 +106,7 @@
                   </label>
                   <input
                     required
-                    type="text"
+                    type="password"
                     class="form-control"
                     id="password"
                     placeholder="Entrez un mot de passe"
@@ -125,6 +142,7 @@ import EmailCard from "../components/EmailCard";
 const USER_URL = "//api.laendrun.ch/user";
 const MESSAGE_URL = "//api.laendrun.ch/email";
 const CREATE_URL = "//api.laendrun.ch/auth/create";
+const DELETE_URL = "//api.laendrun.ch/user/delete";
 
 const create_schema = Joi.object({
   username: Joi.string()
@@ -144,6 +162,7 @@ const create_schema = Joi.object({
 export default {
   data: () => ({
     loading: false,
+    all_messages: false,
     errorMessage: "",
     successMessage: "",
     users: "",
@@ -165,6 +184,8 @@ export default {
       this.$router.push("/login");
     },
     create() {
+      this.errorMessage = "";
+      this.successMessage = "";
       const { error, value } = create_schema.validate(this.newUser);
       if (!error) {
         this.loading = true;
@@ -180,6 +201,10 @@ export default {
             if (response.ok) {
               this.loading = false;
               this.successMessage = "Utilisateur créé";
+              setTimeout(() => {
+                this.successMessage = "";
+              }, 3000);
+              this.fetch_users();
             } else {
               this.loading = false;
               this.errorMessage = `Erreur: ${response.status} ${response.statusText}`;
@@ -193,34 +218,75 @@ export default {
         this.errorMessage = error.message;
       }
     },
+    fetch_all_messages() {
+      this.all_messages = !this.all_messages;
+      if (this.all_messages) {
+        fetch(MESSAGE_URL, {
+          headers: {
+            authorization: `Bearer ${localStorage.token}`
+          }
+        })
+          .then(res => res.json())
+          .then(result => {
+            this.messages = result.emails;
+          });
+      } else {
+        this.fetch_messages();
+      }
+    },
+    fetch_users() {
+      fetch(USER_URL, {
+        headers: {
+          authorization: `Bearer ${localStorage.token}`
+        }
+      })
+        .then(res => res.json())
+        .then(result => {
+          result.users.forEach(user => {
+            user.headingId = `heading${user._id}`;
+            user.collapseId = `collapse${user._id}`;
+            user.collapseIdTarget = `#collapse${user._id}`;
+          });
+          this.users = result.users;
+        });
+    },
+    fetch_messages() {
+      fetch(`${MESSAGE_URL}/?to=contact@laendrun.ch`, {
+        headers: {
+          authorization: `Bearer ${localStorage.token}`
+        }
+      })
+        .then(res => res.json())
+        .then(result => {
+          this.messages = result.emails;
+        });
+    },
     deleteUser(id) {
-      console.log(id);
+      this.loading = true;
+      fetch(`${DELETE_URL}/?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          "contente-type": "application/json",
+          authorization: `Bearer ${localStorage.token}`
+        }
+      }).then(response => {
+        if (response.ok) {
+          this.loading = false;
+          this.successMessage = "Utilisateur supprimé";
+          setTimeout(() => {
+            this.successMessage = "";
+          }, 3000);
+        } else {
+          this.loading = false;
+          this.errorMessage = `Erreur: ${response.status} ${response.statusText}`;
+        }
+        this.fetch_users();
+      });
     }
   },
   mounted() {
-    fetch(USER_URL, {
-      headers: {
-        authorization: `Bearer ${localStorage.token}`
-      }
-    })
-      .then(res => res.json())
-      .then(result => {
-        result.users.forEach(user => {
-          user.headingId = `heading${user._id}`;
-          user.collapseId = `collapse${user._id}`;
-          user.collapseIdTarget = `#collapse${user._id}`;
-        });
-        this.users = result.users;
-      });
-    fetch(MESSAGE_URL, {
-      headers: {
-        authorization: `Bearer ${localStorage.token}`
-      }
-    })
-      .then(res => res.json())
-      .then(result => {
-        this.messages = result.emails;
-      });
+    this.fetch_users();
+    this.fetch_messages();
   },
   computed: {
     messagesCount() {

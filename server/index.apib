@@ -191,6 +191,21 @@ This endpoint let's an admin request information on a specific user by ID.
     + Attributes
         + Include User
 
+## Delete a user [DELETE /user/delete/{?id}]
+
+This endpoint let's an admin delete a user with the specified id.
+
++ Parameters
+    + id: `1` (number) - ID of the user to delete in the database.
+
++ Request
+    + Headers
+
+            Authorization: Bearer admin_token
++ Response 200 (application/json)
+    + Attributes
+        + mesage: 'user with id `id` deleted.
+
 # Group Auth
 
 This resource holds all the endpoints related to authentication (login, signup, create).
