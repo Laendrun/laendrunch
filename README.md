@@ -143,7 +143,10 @@ v1.8.0
     - Backend
         - Added GET /user/?id=```id``` route
             - This route let's admin request informations on a specific user by ID.
+        - Added DELETE /user/?id=```id``` route
+            - Route to delete user
     - Frontend
         - Added a tab in the admin dashboard to create new user
+        - Added a button to delete a user on the admin dashboard
     - Documentation
         - Update Backend API Doc

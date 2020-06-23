@@ -32,6 +32,7 @@
               v-for="user in users"
               :user="user"
               parentTarget="#userAccordion"
+              v-on:deleteUser="deleteUser($event)"
               :key="user._id"
             />
           </div>
@@ -191,6 +192,9 @@ export default {
       } else {
         this.errorMessage = error.message;
       }
+    },
+    deleteUser(id) {
+      console.log(id);
     }
   },
   mounted() {
