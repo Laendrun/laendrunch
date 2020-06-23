@@ -199,6 +199,40 @@ exports.get_user = async (req, res, next) => {
             await db.close();
         }
     }
+}
 
+exports.delete_user = async (req, res, next) => {
+    const id = req.query.id;
 
+    if (id) {
+        const db = makeDb(config);
+
+        let sql = "DELETE FROM ?? WHERE ?? = ?";
+        let inserts = ['users', '_id', id];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const deletedUser = await db.query(sql);
+
+            if (deletedUser.affectedRows == 0) {
+                const error = new Error('User not found');
+                res.status(404);
+                next(error);
+            } else {
+                return res.status(200).json({
+                    message: `User with id ${id} deleted`
+                })
+            }
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+    } else {
+        const error = new Error('Parameter id is required');
+        res.status(422);
+        next(error);
+    }
 }

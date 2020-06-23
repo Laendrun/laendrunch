@@ -39,17 +39,6 @@
             <button v-on:click="$emit('deleteUser', user._id)" class="btn btn-secondary">❌</button>
           </div>
         </div>
-        <!-- <div class="row-12" style="background: red">
-          <div class="col-6 text-left" style="background: green">
-            <p>{{ user.email }}</p>
-            <p v-if="user.role_id === 1">Utilisateur</p>
-            <p v-else>Administrateur</p>
-          </div>
-          <div class="col-6 text-right" style="background: blue">
-            <p v-if="user.role_id === 1">Utilisateur</p>
-            <p v-else>Administrateur</p>
-          </div>
-        </div>-->
       </div>
     </div>
   </div>
