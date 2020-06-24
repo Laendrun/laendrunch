@@ -132,3 +132,39 @@ exports.get_email = async (req, res, next) => {
         await db.close();
     }
 }
+
+exports.delete_email = async (req, res, next) => {
+    const id = req.query.id;
+
+    if (id) {
+        const db = makeDb(config);
+
+        let sql = "DELETE FROM ?? WHERE ?? = ?";
+        let inserts = ['mails', '_id', id];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const deletedMessage = await db.query(sql);
+
+            if (deletedMessage.affectedRows == 0) {
+                const error = new Error('Message not found');
+                res.status(404);
+                next(error);
+            } else {
+                return res.status(200).json({
+                    message: `Message with id ${id} deleted`
+                })
+            }
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+    } else {
+        const error = new Error('Parameter id is required');
+        res.status(422);
+        next(error);
+    }
+}

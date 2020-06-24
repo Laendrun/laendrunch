@@ -152,3 +152,17 @@ v1.8.0
             - There's a toggle switch to show all the messages
     - Documentation
         - Update Backend API Doc
+- v1.10.0
+    - Backend
+        - **New** GET /roles/id route
+            - Responds with the role_id of the user making the request.
+        - **New** DELETE /email/id route
+            - Let's an admin delete a mail saved in the database
+        - **New** PATCH /user/role_id route
+            - Like the PATCH /user/* but for role_id
+                - Only admins can use this route, you have to specify the user_id to the patch will apply
+    - Frontend
+        - Use the new backend route to update the middlewares.
+        - Added a button to delete a message on the admin dashboard.
+        - Added a button to modify a user's informations (username, password, email and role_id)
+        - Modified 404 page to make it look better

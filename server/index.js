@@ -8,6 +8,7 @@ const morgan_type = process.env.NODE_ENV = 'dev' ? 'dev' : 'tiny';
 const emailRoutes = require('./api/routes/email');
 const authRoutes = require('./api/routes/auth');
 const userRoutes = require('./api/routes/user');
+const rolesRoutes = require('./api/routes/roles');
 
 const { checkTokenSetUser, isLoggedIn, isSpecial } = require('./api/middlewares/auth.js');
 
@@ -27,6 +28,7 @@ app.use('/email', isLoggedIn, emailRoutes);
 app.use('/special', isSpecial, emailRoutes);
 app.use('/user', isLoggedIn, userRoutes);
 app.use('/auth', authRoutes);
+app.use('/roles', rolesRoutes);
 
 function notFound(req, res, next) {
   res.status(404);

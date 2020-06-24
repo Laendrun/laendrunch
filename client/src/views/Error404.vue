@@ -1,6 +1,20 @@
 <template>
-  <div class="404 text-center">
-    <h1>404 Not Found</h1>
-    <h3>The page you're looking for does not exist.</h3>
-  </div>
+  <section>
+    <div class="page-wrap d-flex flex-row align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12 text-center">
+            <span class="display-1 d-block">404</span>
+            <div class="mb-4 lead">La page que vous recherchez n'existe pas 😭.</div>
+            <router-link to="/" class="btn btn-link">Retour à l'acceuil</router-link>
+          </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+          <small>
+            <a href="https://bootsnipp.com/snippets/VgBP3">Source</a>
+          </small>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>

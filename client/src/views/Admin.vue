@@ -38,26 +38,38 @@
               :user="user"
               parentTarget="#userAccordion"
               v-on:deleteUser="deleteUser($event)"
+              v-on:modifyUser="modifyUser($event)"
+              v-on:update="fetch_users"
               :key="user._id"
             />
           </div>
         </div>
         <!-- Messages tab -->
         <div class="tab-pane fade mb-2" id="messages">
+          <div class="alert alert-danger" role="alert" v-if="errorMessage">{{ errorMessage }}</div>
+          <div class="alert alert-success" role="alert" v-if="successMessage">{{ successMessage }}</div>
+          <div v-if="loading">
+            <img src="../assets/infinity.svg" />
+          </div>
           <div class="row mt-3">
             <div class="col-sm">
               <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="all_emails" />
                 <label
                   class="custom-control-label"
-                  v-on:click="fetch_all_messages"
+                  v-on:click="switch_mails"
                   for="all_emails"
                 >Afficher tous les messages</label>
               </div>
             </div>
           </div>
           <div class="row mt-3">
-            <email-card v-for="message in messages" :message="message" :key="message._id" />
+            <email-card
+              v-for="message in messages"
+              v-on:deleteMessage="deleteMessage($event)"
+              :message="message"
+              :key="message._id"
+            />
           </div>
         </div>
         <!-- Create User tab -->
@@ -143,6 +155,7 @@ const USER_URL = "//api.laendrun.ch/user";
 const MESSAGE_URL = "//api.laendrun.ch/email";
 const CREATE_URL = "//api.laendrun.ch/auth/create";
 const DELETE_URL = "//api.laendrun.ch/user/delete";
+const DELETE_MESSAGE_URL = "//api.laendrun.ch/email/id";
 
 const create_schema = Joi.object({
   username: Joi.string()
@@ -218,8 +231,12 @@ export default {
         this.errorMessage = error.message;
       }
     },
-    fetch_all_messages() {
+    switch_mails() {
       this.all_messages = !this.all_messages;
+      this.fetch_all_messages();
+    },
+    fetch_all_messages() {
+      // this.all_messages = !this.all_messages;
       if (this.all_messages) {
         fetch(MESSAGE_URL, {
           headers: {
@@ -246,6 +263,8 @@ export default {
             user.headingId = `heading${user._id}`;
             user.collapseId = `collapse${user._id}`;
             user.collapseIdTarget = `#collapse${user._id}`;
+            user.modalId = `modal${user._id}`;
+            user.modalIdTarget = `#modal${user._id}`;
           });
           this.users = result.users;
         });
@@ -282,6 +301,31 @@ export default {
         }
         this.fetch_users();
       });
+    },
+    deleteMessage(id) {
+      this.loading = true;
+      fetch(`${DELETE_MESSAGE_URL}/?id=${id}`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.token}`
+        }
+      }).then(response => {
+        if (response.ok) {
+          this.loading = false;
+          this.successMessage = "Message supprimé";
+          setTimeout(() => {
+            this.successMessage = "";
+          }, 3000);
+        } else {
+          this.loading = false;
+          this.errorMessage = `Erreur: ${response.status} ${response.statusText}`;
+        }
+        this.fetch_all_messages();
+      });
+    },
+    modifyUser(id) {
+      console.log(id);
     }
   },
   mounted() {

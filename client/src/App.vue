@@ -17,7 +17,7 @@
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <router-link class="nav-link" to="/login">Connexion</router-link>
+            <router-link class="nav-link" to="/login">Tableau de bord</router-link>
           </li>
         </ul>
       </div>
@@ -33,4 +33,3 @@
     </div>
   </div>
 </template>
-

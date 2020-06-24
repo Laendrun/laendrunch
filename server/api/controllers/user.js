@@ -15,6 +15,11 @@ const username = Joi.object({
     username: Joi.string().alphanum().min(3).max(30).required(),
 })
 
+const role_id = Joi.object({
+    role_id: Joi.number().required(),
+    user_id: Joi.number().required()
+})
+
 exports.patch_password = async (req, res, next) => {
     const db = makeDb(config);
     const { error, value } = password.validate(req.body);
@@ -56,6 +61,35 @@ exports.patch_email = async (req, res, next) => {
     if (!error) {
         let sql = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
         let inserts = ['users', 'email', value.email, '_id', req.user._id];
+        sql = mysql.format(sql, inserts);
+
+        try {
+            const update = await db.query(sql);
+            return res.status(201).json({
+                user: update
+            });
+        } catch (err) {
+            const error = new Error(err);
+            res.status(500);
+            next(error);
+        } finally {
+            await db.close();
+        }
+    } else {
+        return res.status(403).json({
+            message: 'Validation failed',
+            error: error.message,
+        })
+    }
+}
+
+exports.patch_role_id = async (req, res, next) => {
+    const db = makeDb(config);
+    const { error, value } = role_id.validate(req.body);
+
+    if (!error) {
+        let sql = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+        let inserts = ['users', 'role_id', value.role_id, '_id', value.user_id];
         sql = mysql.format(sql, inserts);
 
         try {
@@ -125,8 +159,8 @@ exports.get_user = async (req, res, next) => {
         if (!req.query.id) {
             const db = makeDb(config);
 
-            let sql = "SELECT * FROM ?? WHERE 1 ORDER BY ?? DESC";
-            let inserts = ['users', 'role_id'];
+            let sql = "SELECT * FROM ?? WHERE 1 ORDER BY ?? DESC, ?? ASC";
+            let inserts = ['users', 'role_id', 'username'];
             sql = mysql.format(sql, inserts);
 
             try {
